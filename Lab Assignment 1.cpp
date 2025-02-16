@@ -4,7 +4,17 @@
 
 using namespace std;
 
+void print_final(string si, string sf, int p)
+{
+    ///remove leading zeros
+    while(sf.size() > p)
+        sf.pop_back();
 
+    while(!si.empty() and si[0] == '0')
+        si.erase(si.begin());
+    if(sf.empty())sf = "0";
+    cout<<si<<'.'<<sf<<endl;
+}
 int cal()
 {
     int i, f, p;
@@ -31,12 +41,7 @@ int cal()
 
     if(t < 5 or t == 5 and (sf[p - 1]- '0') % 2 == 0)
     {
-        while(sf.size() > p)
-            sf.pop_back();
-        while(!si.empty() and si[0] == '0')
-            si.erase(si.begin());
-        if(sf.empty())sf = "0";
-        cout<<si<<'.'<<sf<<endl;
+        print_final(si,sf,p);
         return 0;
     }
     if(t == 5 and (sf[p - 1]- '0') % 2 or t > 5)
@@ -66,14 +71,7 @@ int cal()
                 --ptr;
             ++si[ptr];
         }
-///        remove leading zeros
-        while(!si.empty() and si[0] == '0')
-            si.erase(si.begin());
-        if(sf.empty())sf = "0";
-
-        while(sf.size() > p)
-            sf.pop_back();
-        cout<<si<<'.'<<sf<<endl;
+        print_final(si,sf,p);
     }
 }
 int32_t main()
