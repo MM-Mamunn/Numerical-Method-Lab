@@ -1,4 +1,3 @@
-
 ///You are given a number (eg: 2.995) and a point that indicates the digit after decimal point. Round to that point
 
 #include<bits/stdc++.h>
@@ -18,14 +17,25 @@ void print_final(string si, string sf, int p)
 }
 int cal()
 {
-    int i, f, p;
+    int i, f = 0, p;
     char ch;
     cout<<"Enter the point: ";
     cin>>p;
     cout<<"Enter the number (x.y type): ";
-    cin>>i>>ch>>f;
-
-    string sf = to_string(f), si = to_string(i);
+    string sf ="",si="",s;
+    cin>>s;
+    for(auto a : s)
+    {
+        if(a == '.')
+        {
+            f = 1;
+            continue;
+        }
+        if(f)
+            sf+=a;
+        else
+            si += a;
+    }
 
     if(sf.size() <= p)
     {
