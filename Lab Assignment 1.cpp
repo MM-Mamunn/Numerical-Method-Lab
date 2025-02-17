@@ -1,3 +1,4 @@
+
 ///You are given a number (eg: 2.995) and a point that indicates the digit after decimal point. Round to that point
 
 #include<bits/stdc++.h>
@@ -68,7 +69,10 @@ int cal()
         {
             int ptr = si.size() - 1;
             while(si[ptr] == '9')
-                --ptr;
+                {
+                    si[ptr] = '0';
+                    --ptr;
+                }
             ++si[ptr];
         }
         print_final(si,sf,p);
