@@ -1,5 +1,4 @@
-///ID: C221046
-///UVA 498
+///Problem: UVA 498 (Using Horners law)
 
 #include<bits/stdc++.h>
 
@@ -27,20 +26,22 @@ int main()
         for(auto xx : x)
         {
             int n = c.size() - 1;
-            ll sum =0;
-            for(auto cc : c)
+            ll sum =0, p = c[0];
+            for(int j = 1 ; j < c.size();j++)
             {
-                sum+= (cc * pow(xx,n--));
+                p = (p * xx) +c[j];
             }
             if(i)
                 cout<<' ';
-            cout<<sum;
+            cout<<p;
             ++i;
         }
         cout<<endl;
    }
     return 0;
 }
+
+
 
 
 
