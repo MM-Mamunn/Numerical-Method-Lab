@@ -1,16 +1,28 @@
-
-///find the number of significant digit
+///You are given a number (eg: 2.995) and a point that indicates the digit after decimal point. Round to that point
 
 #include<bits/stdc++.h>
 
 using namespace std;
 
+void print_final(string si, string sf, int p)
+{
+    ///remove leading zeros
+    while(sf.size() > p)
+        sf.pop_back();
+
+    while(!si.empty() and si[0] == '0')
+        si.erase(si.begin());
+    if(sf.empty())sf = "0";
+    cout<<si<<'.'<<sf<<endl;
+}
 int cal()
 {
     int i, f = 0, p;
     char ch;
-    string sf="", si="",s ;
+    cout<<"Enter the point: ";
+    cin>>p;
     cout<<"Enter the number (x.y type): ";
+    string sf ="",si="",s;
     cin>>s;
     for(auto a : s)
     {
@@ -19,28 +31,62 @@ int cal()
             f = 1;
             continue;
         }
-        if(!f)
-            si += a;
+        if(f)
+            sf+=a;
         else
-            sf += a;
-
+            si += a;
     }
-    if(!f)
+
+    if(sf.size() <= p)
     {
-        while(!si.empty() and si.back() == '0')
-            si.pop_back();
-        cout<<"Number of Significant digits is "<<si.size() + sf.size()<<endl;
+        cout<<si<<'.'<<sf<<endl;
         return 0;
     }
+///Adding a leading '0' for easier calculation
+    si= '0' + si;
 
-    while(!si.empty() and si[0] == '0')
-        si.erase(si.begin());
-    if(si.empty())
-        while(!sf.empty() and sf[0]== '0')
-            sf.erase(sf.begin());
-    cout<<"Number of Significant digits is "<<si.size() + sf.size()<<endl;
+    int t= sf[p] - '0';
 
+///flag to control how far the rounding should traverse
+    int fl = 0;
 
+    if(t < 5 or t == 5 and (sf[p - 1]- '0') % 2 == 0)
+    {
+        print_final(si,sf,p);
+        return 0;
+    }
+    if(t == 5 and (sf[p - 1]- '0') % 2 or t > 5)
+    {
+        int ptr = p - 1;
+        while(ptr >= 0)
+        {
+            if(sf[ptr] == '9')
+            {
+                sf[ptr] = '0';
+                --ptr;
+                fl = 1;
+                continue;
+            }
+            else
+            {
+                sf[ptr] += 1;
+                fl = 0;
+                break;
+            }
+        }
+//    ///when rounding comes to integer part
+        if(fl)
+        {
+            int ptr = si.size() - 1;
+            while(si[ptr] == '9')
+                {
+                    si[ptr] = '0';
+                    --ptr;
+                }
+            ++si[ptr];
+        }
+        print_final(si,sf,p);
+    }
 }
 int32_t main()
 {
@@ -55,9 +101,17 @@ int32_t main()
 
 /*
 TC:
-4
-45.003
-00.0033
-00330.003300
-1200
+6
+2
+2.995
+2
+2.985
+2
+2.987
+2
+2.997
+2
+2.983
+2
+2.993
 */
