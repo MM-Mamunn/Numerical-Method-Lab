@@ -47,15 +47,18 @@ int main()
         cout<<"Enter the coefficient of x^"<<i<<" :";
         cin>>c[i];
     }
-    double lower = -100, upper = 100, x = 1.0;///boundary and increment
 
+    double lower , upper , x ;///boundary and increment
+   cout<<"Enter the lower boundary: ";cin>>lower;
+   cout<<"Enter the upper boundary: ";cin>>upper;
+   cout<<"Enter the increment span: ";cin>>x;
     double x2 = lower, x1 = lower;
 
     while(x2 < upper)
     {
         x1 = lower, x2 = lower + x;
         double f1 = f_x(x1,c),f2 =f_x(x2,c);
-        lower = x2 + 0.1;
+        lower = x2 + 0.00000001;
         if((f1 * f2) > 0)
         {
             continue;
@@ -71,6 +74,9 @@ Input:
 0
 -6
 4
+-100.0
+100.0
+1.0
 Output:
 -2.73125
 0.732812

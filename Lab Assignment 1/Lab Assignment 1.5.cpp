@@ -31,7 +31,7 @@ int main()
     {
         x1 = lower, x2 = lower + x;
         double f1 = f_x(x1),f2 =f_x(x2);
-        lower = x2 + 0.1;
+        lower = x2 + 0.000001;
         if((f1 * f2) > 0)
         {
             continue;

@@ -45,7 +45,11 @@ int main()
         cout<<"Enter the coefficient of x^"<<i<<" :";
         cin>>c[i];
     }
-    double x1 = -2.0, x2 = 1.0;
+    double x1 , x2 ;
+
+    cout<<"Enter initial estimate of x1: ";cin>>x1;
+    cout<<"Enter initial estimate of x2: ";cin>>x2;
+
 
     double x0 = x1 - (f_x(x1,c) * (x2- x1))/ (f_x(x2,c) - f_x(x1,c));
     if(f_x(x1,c) * f_x(x0,c) < 0.0)
@@ -73,6 +77,8 @@ Input:
 0
 -1
 2
+-2.0
+1.0
 Output:
 -1.5214
 */

@@ -53,7 +53,9 @@ for( int  i = n ; i >= 0;i--)
     cout<<"Enter the coefficient of x^"<<i<<" :";
     cin>>c[i];
 }
-double x1 = 4.0, x2 = 2.0;//Initial estimate
+double x1 , x2;
+cout<<"Enter initial estimate of x1: ";cin>>x1;
+cout<<"Enter initial estimate of x2: ";cin>>x2;
 double fx1 = f_x(x1,c), fx2 = f_x(x2,c);
 double x3 = x2 - (fx2 * (x2 - x1)) / (fx2 - fx1);
 while(abs(x3 - x2) > eps)
@@ -75,6 +77,8 @@ Input:
 -5
 0
 -29
+4.0
+2.0
 Output: 5.848
 
 */

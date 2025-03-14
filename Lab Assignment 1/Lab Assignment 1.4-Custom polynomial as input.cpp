@@ -34,8 +34,10 @@ int main()
         cout<<"Enter the coefficient of x^"<<i<<" :";
         cin>>c[i];
     }
-    double largest = 3.0;
-    double smallest = 2.0;
+    double largest ,smallest ;
+    cout<<"Enter the lower boundary: ";cin>>smallest;
+    cout<<"Enter the upper boundary: ";cin>>largest;
+
     while (true)
     {
         double diff = fabs(largest - smallest);
@@ -57,6 +59,8 @@ Input:
 0
 -9
 1
+2.0
+3.0
 Output:
 2.941406250
 */
