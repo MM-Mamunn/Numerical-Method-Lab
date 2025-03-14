@@ -23,7 +23,7 @@ double bisection_root(double x1, double x2)
 
 int main()
 {
-    double lower = -100, upper = 100, x = 1;///boundary and increment
+    double lower = -100, upper = 100, x = 1.0;///boundary and increment
 
     double x2 = lower, x1 = lower;
 
@@ -31,7 +31,7 @@ int main()
     {
         x1 = lower, x2 = lower + x;
         double f1 = f_x(x1),f2 =f_x(x2);
-        lower = x2;
+        lower = x2 + 0.1;
         if((f1 * f2) > 0)
         {
             continue;
