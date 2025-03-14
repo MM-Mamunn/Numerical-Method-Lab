@@ -1,4 +1,3 @@
-
 ///By taking any polynomial as input
 ///Write a program to find the root of the equation x3 – 5x2 –29 = 0, correct to 3 decimal places, by using secant method.
 
