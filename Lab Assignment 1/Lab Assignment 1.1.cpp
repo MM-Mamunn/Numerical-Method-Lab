@@ -27,6 +27,8 @@ int cal()
     {
         while (!si.empty() and si.back() == '0')
             si.pop_back();
+         while (!si.empty() and si[0] == '0')
+            si.erase(si.begin());
         cout << "Number of Significant digits is " << si.size() + sf.size() << endl;
         return 0;
     }
