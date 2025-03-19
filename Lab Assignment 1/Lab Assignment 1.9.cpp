@@ -1,69 +1,87 @@
-//Write a program to find the quotient polynomial q(x) such that p(x) = (x - 2) q(x) where the polynomial p(x) = x3 - 5x2 + 10x - 8 = 0 has a root at x = 2.
+///Write a program to find all the roots of the equation x3 - 6x + 4 = 0, correct to 3 decimal places. [Use Newton-Raphson method with deflation].
 
 #include <bits/stdc++.h>
 using namespace std;
 
+//Find f(x)
+double f(double x, vector<double>c)
+{
+     int n = c.size();
+    double result = 0.0;
+    for (int i = 0; i < n; ++i) {
+        result += 1.00 * (c[i] * pow(x, i));
+    }
+    return result;
+}
 
+//Find f'(x)
+double fprime(double x, vector<double>c)
+{
+     int n = c.size();
+    double result = 0.0;
+    for (int i = 1; i < n; ++i) { // Start from 1 since the derivative of x^0 is 0
+        result += 1.00 *(i * c[i] * pow(x, i - 1));
+    }
+    return result;
 
-/*
-p(x) = (x – xr ) q(x),
-bi-1 = ai + xr*bi where, bn = 0 and i = n, n-1, ………….1
-*/
-
+}
 
 int main()
 {
     int n;
-    cout<<"Enter the degree of polynomial p(x):";
+    cout<<"Enter the degree of the polynomial :";
     cin>>n;
-    vector<double>p(n + 1),q(n + 1);
-    double xr;/// Has a root on this point
-
-    for(int i = n ; i >= 0 ; i--)
+    vector<double>c(n + 1);
+    for( int i = n; i>=0; i--)
     {
-        cout<<"Enter the coefficients of x^"<<i<<" :";
-        cin>>p[i];
+        cout<<"Enter the coefficient of x^"<<i<<" :";
+        cin>>c[i];
     }
-    cout<<"Enter Xr :";
-    cin>>xr;
+    vector<double>roots;
+    double x0 =1.0;
+    while(n > 1)
+    {
+        ///evaluate Newton-Raphson
+        double x = x0;
+        double xNew = x - f(x,c) / fprime(x,c);
 
-    q[n] = 0;
-    for( int i = n - 1; i >= 0; i--)
-    {
-        q[i] = p[i + 1] + (xr * q[i + 1]);
-    }
-    cout<<"Quotient Polynomial is : ";
-    for( int i = n ; i >= 0; i--)
-    {
-        if(q[i])
+        while(fabs(xNew- x) > (0.0001))
         {
-            if(q[i] < 0 and i < (n - 1))
-                cout<<"-";
-            else if (i < (n - 1))
-                cout<<"+";
-            if(abs(q[i]) > 1)
-                cout<<abs(q[i]);
-            if(i)
-                cout<<"x";
-            if(i > 1)
-            {
-                cout<<"^"<<i;
-            }
+            x = xNew;
+
+            xNew = x - f(x,c) / fprime(x,c);
         }
+
+        roots.push_back(xNew);
+
+        ///Synthetic division starts(same as finding quotient polynomial)
+        vector<double>temp(n + 1 );
+        temp[n] = 0;
+        for(int i = n - 1 ; i >= 0; i--)
+            temp[i] = (c[i + 1] + x * temp[i  + 1]);
+
+        ///Synthetic division ends
+
+        c.clear();
+
+        temp.pop_back();
+        c = temp;
+        --n;
     }
-    cout<<endl;
-
+    int i = 1;
+    roots.push_back(-c[0]/c[1]);
+    for(auto a : roots)
+        cout<<"Root "<<i++<<": "<<a<<endl;
 }
-
 /*
-input:
+Input:
 3
 1
--5
-10
--8
-2
-x^2-3x+4
+0
+-6
+4
 Output:
-
+Root 1: 0.732051
+Root 2: 2
+Root 3: -2.73205
 */
