@@ -55,17 +55,17 @@ int main()
         roots.push_back(xNew);
 
         ///Synthetic division starts(same as finding quotient polynomial)
-        vector<double>temp;
-        reverse(c.begin(),c.end());
-        temp.push_back(c[0]);
-        for(int i = 1 ; i <n; i++)
-            temp.push_back(c[i] + x * temp[i -1]);
-        c.clear();
-        c = temp;
+        vector<double>temp(n + 1 );
+        temp[n] = 0;
+        for(int i = n - 1 ; i >= 0; i--)
+            temp[i] = (c[i + 1] + x * temp[i  + 1]);
 
         ///Synthetic division ends
-        reverse(c.begin(),c.end());
 
+        c.clear();
+
+        temp.pop_back();
+        c = temp;
         --n;
     }
     int i = 1;
