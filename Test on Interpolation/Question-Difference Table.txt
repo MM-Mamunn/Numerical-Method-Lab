@@ -1,0 +1,7 @@
+The following values of f (x) are given.                            
+
+
+     x              1    2     3       4       5
+   y =f(x)     1     8   27     64     125
+
+Write a program to find difference table for the above values.
