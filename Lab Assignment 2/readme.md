@@ -40,7 +40,7 @@ Using the same dataset as in Problem 1:
 
 Write a program to approximate the value of \( y \) when \( x = 1.7 \) using Newton's forward interpolation formula.
 
-[**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.2.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.2.cpp)
 
 ---
 
@@ -55,7 +55,7 @@ Using the following data points:
 
 Write a program to approximate the value of \( y \) when \( x = 4.7 \) using Newton's backward interpolation formula.
 
-[**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.3.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.3.cpp)
 
 ---
 
