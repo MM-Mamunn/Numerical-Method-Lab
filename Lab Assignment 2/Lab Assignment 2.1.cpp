@@ -5,6 +5,7 @@ The following values of f (x) are given.
 Write a program to find difference table for the above values.
 
 */
+///Forward Difference Table
 
 #include<bits/stdc++.h>
 
