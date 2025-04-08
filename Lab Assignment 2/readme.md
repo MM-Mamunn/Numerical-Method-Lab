@@ -27,7 +27,7 @@ Given the data:
 
 Write a program to generate the finite (difference) table for these values.
 
----
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.1.cpp)
 
 ### Problem 2: Newton's Forward Interpolation
 
@@ -39,6 +39,8 @@ Using the same dataset as in Problem 1:
 | y   | 1   | 8   | 27  | 64  | 125 |
 
 Write a program to approximate the value of \( y \) when \( x = 1.7 \) using Newton's forward interpolation formula.
+
+[**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.2.cpp)
 
 ---
 
@@ -52,6 +54,8 @@ Using the following data points:
 | y   | 1   | 8   | 27  | 64  | 125 |
 
 Write a program to approximate the value of \( y \) when \( x = 4.7 \) using Newton's backward interpolation formula.
+
+[**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.3.cpp)
 
 ---
 
