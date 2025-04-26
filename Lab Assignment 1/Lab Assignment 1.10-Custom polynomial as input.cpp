@@ -38,11 +38,10 @@ int main()
         cin>>c[i];
     }
     vector<double>roots;
-    double x0 =1.0;
+    double x =1.0;
     while(n > 1)
     {
         ///evaluate Newton-Raphson
-        double x = x0;
         double xNew = x - f(x,c) / fprime(x,c);
 
         while(fabs(xNew- x) > (0.0001))
@@ -53,7 +52,7 @@ int main()
         }
 
         roots.push_back(xNew);
-
+        x = xNew;
         ///Synthetic division starts(same as finding quotient polynomial)
         vector<double>temp(n + 1 );
         temp[n] = 0;
