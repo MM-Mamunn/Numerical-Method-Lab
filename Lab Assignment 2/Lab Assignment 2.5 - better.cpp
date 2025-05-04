@@ -30,15 +30,12 @@ int main()
     D[0] = y;
     for( int i = 1 ; i < n ; i++)
     {
-        int l = 0, r = i;
         for( int j = 1 ; j < D[i - 1].size(); j++)
         {
             double temp = D[i-1][j] - D[i-1][j -1];
-            double temp2 = x[r] - x[l];
+            double temp2 = x[j - 1 + i] - x[j - 1];
             double ans = temp/ temp2;
             D[i].push_back(ans);
-            ++l;
-            ++r;
         }
     }
     ///Print the table

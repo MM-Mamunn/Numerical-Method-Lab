@@ -85,6 +85,6 @@ Write a program to determine the value of \( x \) for which \( f(x) = 85 \) usin
 
 Write a program to approximate the value of \( y \) when \( x = 2.7 \) using Newton's divided difference formula.
 
-## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.5.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.5%20-%20better.cpp)
 
 ---
