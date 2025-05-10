@@ -27,7 +27,7 @@ This lab assignment consists of five numerical methods problems that involve fin
 
 Write a program to generate the finite (difference) table for these values.
 
-## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.1.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Mid%20Term/Lab%20Assignment%202/Lab%20Assignment%202.1.cpp)
 
 ### Problem 2: Newton's Forward Interpolation
 
@@ -40,7 +40,7 @@ Write a program to generate the finite (difference) table for these values.
 
 Write a program to approximate the value of \( y \) when \( x = 1.7 \) using Newton's forward interpolation formula.
 
-## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.2.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Mid%20Term/Lab%20Assignment%202/Lab%20Assignment%202.2.cpp)
 
 ---
 
@@ -55,7 +55,7 @@ Write a program to approximate the value of \( y \) when \( x = 1.7 \) using New
 
 Write a program to approximate the value of \( y \) when \( x = 4.7 \) using Newton's backward interpolation formula.
 
-## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.3.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Mid%20Term/Lab%20Assignment%202/Lab%20Assignment%202.3.cpp)
 
 ---
 
@@ -70,7 +70,7 @@ Write a program to approximate the value of \( y \) when \( x = 4.7 \) using New
 
 Write a program to determine the value of \( x \) for which \( f(x) = 85 \) using Lagrange’s inverse interpolation formula.
 
-## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.4.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Mid%20Term/Lab%20Assignment%202/Lab%20Assignment%202.4.cpp)
 
 ---
 
@@ -85,6 +85,6 @@ Write a program to determine the value of \( x \) for which \( f(x) = 85 \) usin
 
 Write a program to approximate the value of \( y \) when \( x = 2.7 \) using Newton's divided difference formula.
 
-## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Lab%20Assignment%202/Lab%20Assignment%202.5%20-%20better.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Mid%20Term/Lab%20Assignment%202/Lab%20Assignment%202.5%20-%20better.cpp)
 
 ---
