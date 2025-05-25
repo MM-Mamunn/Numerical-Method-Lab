@@ -89,7 +89,7 @@ using **Simpson’s 3/8 Rule**.
 **Description:**  
 Write a program to find the **determinant of a 3×3 matrix**.
 
-## [**Solution**](./Q6_Determinant_3x3.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Final/Lab%20Assignment%203/Lab%20Assignment%203.6.cpp)
 
 ---
 
