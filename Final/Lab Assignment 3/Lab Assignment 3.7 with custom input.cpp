@@ -11,34 +11,43 @@ Write a program to solve the following system of linear equations by using Matri
 using namespace std;
 
 
-double det(vector<vector<double>> &M)
-{
-    int n = M.size() - 1;
-    if (n == 1)
-        return M[1][1];
-    if (n == 2)
-        return M[1][1]*M[2][2] - M[1][2]*M[2][1 ];
-
-    double ans = 0.0;
-    for( int i = 1; i <= n ; i++)
-    {
-        int s = i,s2 = i;
-        double mul = 1.0,mul2 = 1.0;
-        for( int j = 1; j <= n ; j++)
-        {
-            mul *= M[j][s];
-            mul2 *= M[j][s2];
-            ++s;
-            --s2;
-            if(s == (n + 1)) s = 1;
-            if(s2 == 0 ) s2 = n;
+// Function to get the minor matrix by excluding row `p` and column `q`
+void getMinor(const vector<vector<double>> &mat, vector<vector<double>> &minor, int n, int p, int q) {
+    int i = 1, j = 1;
+    for (int row = 1; row <= n; row++) {
+        for (int col = 1; col <= n; col++) {
+            if (row != p && col != q) {
+                minor[i][j++] = mat[row][col];
+                if (j > n - 1) {
+                    j = 1;
+                    i++;
+                }
+            }
         }
-        ans += mul;
-        ans -= mul2;
     }
-    return ans;
 }
 
+// Recursive function to calculate determinant
+double determinant(const vector<vector<double>> &mat, int n) {
+    if (n == 1)
+        return mat[1][1];
+
+    if (n == 2)
+        return mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1];
+
+    double det = 0;
+    vector<vector<double>> minor(n, vector<double>(n));
+
+    int sign = 1; // Sign for cofactor
+
+    for (int f = 1; f <= n; f++) {
+        getMinor(mat, minor, n, 1, f);
+        det += sign * mat[1][f] * determinant(minor, n - 1);
+        sign = -sign;
+    }
+
+    return det;
+}
 
 void transpose(vector<vector<double>> &M)
 {
@@ -90,7 +99,7 @@ int main()
         cin>>B[i];
     }
 
-    double detA = det(A);
+    double detA = determinant(A, n);
     if(fabs(detA - 0.0) < 0.000001 )
     {
         cout<<"Invalid\n";
@@ -118,22 +127,13 @@ int main()
                 if(temp.size() > 1)
                     t.push_back(temp);
             }
-            double tt = pow(-1,r + c) * det(t);
+            double tt = pow(-1,r + c) * determinant(t,t.size() - 1);
             invA[r][c] = tt;
         }
     }
     ///transpose
     transpose(invA);
     div(invA,detA);
-    for( int i = 1 ; i <= n ; i++)
-    {
-        for( int j = 1 ; j <=n ; j++)
-        {
-            cout<<invA[i][j]<<' ';
-        }
-        cout<<endl;
-    }
-
   vector<double>answer;
     for( int r = 1; r <= n; r++)
     {
@@ -152,22 +152,16 @@ int main()
 
 /*
 Input:
-3
-3 1 2 3
-2 -3 -1 -3
-1 2 1 4
+5
+1 1 1 1 1 15
+2 1 1 1 1 16
+1 2 1 1 1 17
+1 1 2 1 1 18
+1 1 1 2 1 19
 Output:
 x1 = 1
 x2 = 2
-x3 = -1
-Input:
-3
-1 1 1 1
-1 2 3 6
-1 3 4 6
-Output:
-x1 = 1
-x2 = -5
-x3 = 5
+x3 = 3
+x4 = 4
+x5 = 5
 */
-
