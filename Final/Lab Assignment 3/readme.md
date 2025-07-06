@@ -54,7 +54,7 @@ Write a program to calculate the approximate area under the curve:
 \]  
 using the **Trapezoidal Rule**.
 
-## [**Solution**]()
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Final/Lab%20Assignment%203/Lab%20Assignment%203.3.cpp)
 
 ---
 
@@ -67,7 +67,7 @@ Write a program to approximate the integral:
 \]  
 using **Simpson’s 1/3 Rule**.
 
-## [**Solution**](./Q4_Simpson13.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Final/Lab%20Assignment%203/Lab%20Assignment%203.4.cpp)
 
 ---
 
@@ -80,7 +80,7 @@ Write a program to approximate the integral:
 \]  
 using **Simpson’s 3/8 Rule**.
 
-## [**Solution**](./Q5_Simpson38.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Final/Lab%20Assignment%203/Lab%20Assignment%203.5.cpp)
 
 ---
 
@@ -102,7 +102,7 @@ x + y + z = 1
 x + 2y + 3z = 6
 x + 3y + 4z = 6
 
-## [**Solution**](./Q7_Matrix_Inversion.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Final/Lab%20Assignment%203/Lab%20Assignment%203.7.cpp)
 
 ---
 
@@ -115,7 +115,7 @@ Solve the following system using **Cramer's Rule**:
 6x + 15y + 2z = 72
 x + y + 54z = 110
 
-## [**Solution**](./Q8_Cramers_Rule.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Final/Lab%20Assignment%203/Lab%20Assignment%203.8.cpp)
 
 ---
 
@@ -128,7 +128,7 @@ Solve the following system using **Gaussian Elimination**:
 x + 4y + 9z = 16
 3x + 2y + 3z = 18
 
-## [**Solution**](./Q9_Gaussian_Elimination.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Final/Lab%20Assignment%203/Lab%20Assignment%203.9.cpp)
 
 ---
 
@@ -141,7 +141,7 @@ x + 2y + z = 8
 2x + 3y + 4z = 20
 4x + 3y + 2z = 16
 
-## [**Solution**](./Q10_Gauss_Jordan.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Final/Lab%20Assignment%203/Lab%20Assignment%203.10%20with%20custom%20input.cpp)
 
 ---
 
@@ -154,7 +154,7 @@ Solve the following system using **Jacobi’s Method**:
 3x + 8y + 29z = 71
 7x + 52y + 13z = 104
 
-## [**Solution**](./Q11_Jacobi.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Final/Lab%20Assignment%203/Lab%20Assignment%203.11%20with%20custom%20input.cpp)
 
 ---
 
@@ -167,6 +167,6 @@ Solve the following system using **Gauss-Seidel Method**:
 2x1 + 10x2 + x3 = 13
 2x1 + 2x2 + 10x3 = 14
 
-## [**Solution**](./Q12_Gauss_Seidel.cpp)
+## [**Solution**](https://github.com/MM-Mamunn/Numerical-Method-Lab/blob/main/Final/Lab%20Assignment%203/Lab%20Assignment%203.12%20with%20custom%20input.cpp)
 
 ---
