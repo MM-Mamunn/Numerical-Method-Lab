@@ -1,10 +1,6 @@
 /*
-Write a program to solve the following system of linear equations by using Gauss-Seidel method.
-        10x1 +   x2   +  x3     = 12
-         2x1  + 10x2 +  x3    = 13
-         2x1  +   2x2 + 10x3 = 14
-
-
+Write a program to find the least square line y = a + bx for the following data
+        x     -2    -1     0     1     2
 */
 
 #include<bits/stdc++.h>

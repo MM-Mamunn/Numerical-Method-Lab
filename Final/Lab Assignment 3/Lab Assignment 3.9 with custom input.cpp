@@ -5,63 +5,60 @@ Write a program to solve the following system of linear equations by using Gauss
           3x + 2y + 3z = 18
 */
 
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
-
 
 int main()
 {
     int n;
-    cout<<"Enter number of unknowns:";
-    cin>>n;
-    vector<vector<double>>A(n + 2, vector<double>(n + 2, 0));
+    cout << "Enter number of unknowns:";
+    cin >> n;
+    vector<vector<double>> A(n + 2, vector<double>(n + 2, 0));
 
-    for( int i = 1 ; i <= n; i++)
+    for (int i = 1; i <= n; i++)
     {
-        for( int j = 1 ; j <= n; j++)
+        for (int j = 1; j <= n; j++)
         {
-            cout<<"Enter a"<<i<<j<<" : ";
-            cin>>A[i][j];
+            cout << "Enter a" << i << j << " : ";
+            cin >> A[i][j];
         }
-        cout<<"Enter b"<<i<<": ";
-        cin>>A[i][n + 1];
+        cout << "Enter b" << i << ": ";
+        cin >> A[i][n + 1];
     }
-///means make 0 to i'th entry of every equation
-    for( int i = 1 ; i < n; i++)
+    /// means make 0 to i'th entry of every equation
+    for (int i = 1; i <= n; i++)
     {
-        ///make operation on j'th eqn
-        for( int j = i + 1; j <= n; j++)
+        /// make operation on j'th eqn
+        for (int j = i + 1; j <= n; j++)
         {
-            double multiplier = ( - ((A[j][i] * 1.00)  /A[i][i]));
-            for( int k = 1; k <= n + 1; k++)
+            double multiplier = (-((A[j][i] * 1.00) / A[i][i]));
+            for (int k = 1; k <= n + 1; k++)
             {
                 double t = A[i][k] * multiplier;
-                A[j][k] +=t;
+                A[j][k] += t;
             }
         }
     }
 
-
-    vector<double>ans(4);
-    map<int, double>m;
-    for(int i = n ;  i >= 1;i--)
+    vector<double> ans(4);
+    map<int, double> m;
+    for (int i = n; i >= 1; i--)
     {
         double t = 0;
-        for( int j= 1; j <= n;j++)
+        for (int j = 1; j <= n; j++)
         {
-            if( i != j)
+            if (i != j)
             {
                 t += m[j] * A[i][j];
             }
         }
         t = A[i][n + 1] - t;
-        t/= (1.00 * A[i][i]);
+        t /= (1.00 * A[i][i]);
         m[i] = t;
     }
-    for( int i = 1 ; i <= n ;i++)
-         cout<<"x1 = "<<m[i]<<endl;
-
+    for (int i = 1; i <= n; i++)
+        cout << "x1 = " << m[i] << endl;
 }
 
 /*
