@@ -1,8 +1,9 @@
+
 /*
 Write a program to solve the following system of linear equations by using Matrix inversion method.
           x +  y  +   z = 1
-          x + 2y + 3z = 6          
-          x + 3y + 4z = 6 
+          x + 2y + 3z = 6
+          x + 3y + 4z = 6
 */
 
 
@@ -26,12 +27,9 @@ int main()
         cin>>B[i];
     }
 
-    double detA = (A[1][1] * A[2][2] * A[3][3]) +
-                  (A[1][2] * A[2][3] * A[3][1]) +
-                  (A[1][3] * A[2][1] * A[3][2]) -
-                  (A[1][1] * A[2][3] * A[3][2]) -
-                  (A[1][2] * A[2][1] * A[3][3]) -
-                  (A[1][3] * A[2][2] * A[3][1]) ;
+    double detA =  A[1][1] * ((A[2][2] * A[3][3]) - (A[2][3] *A[3][2]))  -
+                  A[1][2] * ((A[2][1] * A[3][3]) - (A[2][3] * A[3][1])) +
+                  A[1][3] * ((A[2][1] * A[3][2]) - (A[2][2] * A[3][1])) ;
     if(fabs(detA - 0.0) < 0.000001 )
     {
         cout<<"Invalid\n";
@@ -100,7 +98,7 @@ x1 = 1
 x2 = 2
 x3 = -1
 Input:
-1 1 1 1 
+1 1 1 1
 1 2 3 6
 1 3 4 6
 Output:
@@ -108,4 +106,3 @@ x1 = 1
 x2 = -5
 x3 = 5
 */
-
