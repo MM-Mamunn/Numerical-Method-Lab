@@ -1,9 +1,3 @@
-/*
-Write a program to solve the following system of linear equations by using Cramer’s Rule:
-           27x +   6y – z     =  85
-           6x + 15y + 2z   = 72
-           x +     y + 54z = 110
-*/
 
 #include<bits/stdc++.h>
 
