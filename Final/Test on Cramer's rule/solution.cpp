@@ -3,14 +3,14 @@
 
 using namespace std;
 
-double det(vector<vector<double>> &A)
+double det(vector<vector<double>> &mat)
 {
-    return (A[1][1] * A[2][2] * A[3][3]) +
-           (A[1][2] * A[2][3] * A[3][1]) +
-           (A[1][3] * A[2][1] * A[3][2]) -
-           (A[1][1] * A[2][3] * A[3][2]) -
-           (A[1][2] * A[2][1] * A[3][3]) -
-           (A[1][3] * A[2][2] * A[3][1]) ;;
+      int det = 0;
+    det = mat[1][1] * (( mat[2][2] * mat[3][3] ) - (mat[2][3] * mat[3][2]));
+    det -= mat[1][2] * (( mat[2][1] * mat[3][3] ) - (mat[2][3] * mat[3][1]));
+    det += mat[1][3] * (( mat[2][1] * mat[3][2] ) - (mat[2][2] * mat[3][1]));
+
+    return det;
 }
 void solve()
 {
@@ -78,4 +78,3 @@ int main()
         solve();
     }
 }
-
