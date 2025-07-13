@@ -1,0 +1,87 @@
+/*
+Write a program to solve the following system of linear equations by using Cramer’s Rule:
+           27x +   6y – z     =  85
+           6x + 15y + 2z   = 72
+           x +     y + 54z = 110
+*/
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+double det(vector<vector<double>> &A)
+{
+    return (A[1][1] * A[2][2] * A[3][3]) +
+           (A[1][2] * A[2][3] * A[3][1]) +
+           (A[1][3] * A[2][1] * A[3][2]) -
+           (A[1][1] * A[2][3] * A[3][2]) -
+           (A[1][2] * A[2][1] * A[3][3]) -
+           (A[1][3] * A[2][2] * A[3][1]) ;;
+}
+void solve()
+{
+    int valid = 1;
+    vector<vector<double>>A(4, vector<double>(4, 0));
+    vector<double>B(4),answer;
+    for( int i = 1 ; i <= 3; i++)
+    {
+        for( int j = 1 ; j <= 3; j++)
+        {
+
+            cin>>A[i][j];
+        }
+        cin>>B[i];
+    }
+
+    double detA = det(A);
+    if(fabs(detA - 0.0) < 0.000001 )
+    {
+        valid = 0;
+
+    }
+
+    vector<double> deter;
+    vector<vector<double>>temp;
+
+    for( int i = 1; i <= 3; i++)
+    {
+        temp = A;
+        for(int j = 1; j <= 3 ; j++)
+        {
+            temp[j][i] = B[j];
+        }
+        deter.push_back(det(temp));
+
+    }
+    deter.push_back(detA);
+    for(auto a : deter)
+        cout<<(long long)a<<' ';
+    cout<<endl;
+    if(!valid)
+    {
+        cout<<"No unique solution\n";
+    }
+    else
+    {
+        cout<<"Unique solution: ";
+        for(int i = 0 ; i < deter.size() - 1; i ++){
+            double ans = (deter[i]/ detA);
+            if(fabs (0 - ans) < 0.0001)
+                ans = 0;
+            cout<<setprecision(3)<<fixed<<ans<<' ';
+        }
+        cout<<endl;
+    }
+
+}
+int main()
+{
+
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        solve();
+    }
+}
+
