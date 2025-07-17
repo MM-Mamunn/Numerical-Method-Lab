@@ -26,22 +26,25 @@ int main()
         cout << "Enter b" << i << ": ";
         cin >> A[i][n + 1];
     }
-    /// means make 0 to i'th entry of every equation
-    for (int i = 1; i <= n; i++)
+
+    ///A[i][j] += ((-A[i][k]/A[k][k]) * A[][j])
+
+    ///Pivot for n diagonal elements (k = 1 to n)
+    for( int k = 1; k <= n; k++)
     {
-        /// make operation on j'th eqn
-        for (int j = i + 1; j <= n; j++)
+        ///Eliminate k'th element of i'th row .(i > k and i <=n )
+        for( int i = k + 1; i <= n; i++)
         {
-            double multiplier = (-((A[j][i] * 1.00) / A[i][i]));
-            for (int k = 1; k <= n + 1; k++)
+            ///For normalization
+            double multiplier = (1.0 * A[i][k] )/(A[k][k] * 1.00);
+            multiplier *= (-1);
+            for( int j = 1 ; j <= n + 1; j++)
             {
-                double t = A[i][k] * multiplier;
-                A[j][k] += t;
+                A[i][j] += multiplier * A[k][j];
             }
         }
     }
 
-    vector<double> ans(4);
     map<int, double> m;
     for (int i = n; i >= 1; i--)
     {
