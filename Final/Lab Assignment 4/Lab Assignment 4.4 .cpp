@@ -24,8 +24,8 @@ int main()
   double in = x, ans = y;
   do
   {
-    in += h;
     ans = ans + (1.00 * h * soln(in, ans));
+    in += h;
   } while (fabs(in - point) > 0.00001);
   cout << "y(" << point << ") = " << ans << endl;
 }
