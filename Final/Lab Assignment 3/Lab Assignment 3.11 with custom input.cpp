@@ -37,8 +37,7 @@ int main()
         assumption[i] = 0.0;
     vector<double>t_assumption(n + 2);
 
-    int it = 0;
-    while(++it <= 80)
+    while(1)
     {
         for( int i = 1; i <= n ; i++)
         {
@@ -54,11 +53,23 @@ int main()
             temp /= (1.00 * A[i][i]);
             t_assumption[i] = temp;
         }
+        bool f = 0;
+        for(int i = 1 ; i <= n ;i++)
+        {
+            if(fabs(assumption[i] - t_assumption[i]) >0.0001 )
+            {
+                f = 1;
+                break;
+            }
+        }
+        if(!f)
+            break;
         assumption = t_assumption;
+
     }
     for( int i = 1; i<=n; i++)
     {
-        cout<<"x"<<i<<" = "<<assumption[i]<<endl;
+        cout<<setprecision(2)<<fixed<<"x"<<i<<" = "<<assumption[i]<<endl;
     }
 }
 
