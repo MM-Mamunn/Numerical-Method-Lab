@@ -1,22 +1,21 @@
-
 #include<bits/stdc++.h>
 
 using namespace std;
 
-double det(vector<vector<double>> &A)
+long long det(vector<vector<long long>> &mat)
 {
-    return (A[1][1] * A[2][2] * A[3][3]) +
-           (A[1][2] * A[2][3] * A[3][1]) +
-           (A[1][3] * A[2][1] * A[3][2]) -
-           (A[1][1] * A[2][3] * A[3][2]) -
-           (A[1][2] * A[2][1] * A[3][3]) -
-           (A[1][3] * A[2][2] * A[3][1]) ;;
+    long long det = 0;
+    det = mat[1][1] * (( mat[2][2] * mat[3][3] ) - (mat[2][3] * mat[3][2]));
+    det -= mat[1][2] * (( mat[2][1] * mat[3][3] ) - (mat[2][3] * mat[3][1]));
+    det += mat[1][3] * (( mat[2][1] * mat[3][2] ) - (mat[2][2] * mat[3][1]));
+
+    return det;
 }
 void solve()
 {
     int valid = 1;
-    vector<vector<double>>A(4, vector<double>(4, 0));
-    vector<double>B(4),answer;
+    vector<vector<long long>>A(4, vector<long long>(4, 0));
+    vector<long long>B(4),answer;
     for( int i = 1 ; i <= 3; i++)
     {
         for( int j = 1 ; j <= 3; j++)
@@ -28,14 +27,13 @@ void solve()
     }
 
     double detA = det(A);
-    if(fabs(detA - 0.0) < 0.000001 )
+    if(detA == 0 )
     {
         valid = 0;
 
     }
-
-    vector<double> deter;
-    vector<vector<double>>temp;
+    vector<long long> deter;
+    vector<vector<long long>>temp;
 
     for( int i = 1; i <= 3; i++)
     {
@@ -45,7 +43,6 @@ void solve()
             temp[j][i] = B[j];
         }
         deter.push_back(det(temp));
-
     }
     deter.push_back(detA);
     for(auto a : deter)
@@ -58,15 +55,15 @@ void solve()
     else
     {
         cout<<"Unique solution: ";
-        for(int i = 0 ; i < deter.size() - 1; i ++){
-            double ans = (deter[i]/ detA);
+        for(int i = 0 ; i < deter.size() - 1; i ++)
+        {
+            double ans = (deter[i] * 1.00)/ detA;
             if(fabs (0 - ans) < 0.0001)
                 ans = 0;
-            cout<<setprecision(3)<<fixed<<ans<<' ';
-        }
+                cout<<setprecision(3)<<fixed<<ans<<' ';
+            }
         cout<<endl;
     }
-
 }
 int main()
 {
@@ -78,4 +75,3 @@ int main()
         solve();
     }
 }
-
