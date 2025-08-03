@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { evaluate, derivative, log } from "mathjs";
+import { evaluate, derivative, log, smaller } from "mathjs";
 import {
   LineChart,
   Line,
@@ -22,6 +22,18 @@ const methodColors = {
 };
 
 export default function App() {
+  // TEAM INFO -- EDIT HERE
+  const team = {
+    name: "Team Info:",
+    members: [
+      { name: "Mamun Mahmud", id: "C221046" },
+      { name: "Jobayer", id: "C221044" },
+      { name: "Md Rayhan Uddain", id: "C221050" },
+      { name: "Md Najmus Sakib Rafi", id: "C221060" },
+    ],
+  };
+  // ---------
+
   // *** State for initial guesses as strings (can be '-', etc) ***
   const [initialGuess, setInitialGuess] = useState({ x0: "1.5", x1: "2" });
 
@@ -55,6 +67,8 @@ export default function App() {
     const methods = ["Bisection", "Newton-Raphson", "Secant", "False Position"];
     const results = methods.map((m) => solveEquation(equation, m, x0, x1));
     setComparison(results);
+    setResult(null);
+    setMethod(""); // Reset method after comparison
   };
 
   // Evaluate function y=f(x)
@@ -75,11 +89,7 @@ export default function App() {
 
   // SHOW initial guess inputs
   function renderInitialInputs() {
-    if (
-      method === "Newton-Raphson" ||
-      method === "Secant" ||
-      method === "False Position"
-    ) {
+    if (method) {
       return (
         <div className="flex gap-3 mb-4 px-3">
           <div>
@@ -94,7 +104,9 @@ export default function App() {
               }
             />
           </div>
-          {(method === "Secant" || method === "False Position") && (
+          {(method === "Secant" ||
+            method === "False Position" ||
+            method === "Bisection") && (
             <div>
               <label className="block text-xs font-bold text-gray-700">
                 x₁
@@ -118,220 +130,257 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-blue-50 p-4 font-sans">
-      <div className="max-w-3xl mx-auto bg-white p-6 rounded-2xl shadow-2xl">
-        <h1 className="text-3xl font-extrabold mb-2 text-center text-blue-700 tracking-tight">
-          Nonlinear Equation Solver
-        </h1>
-        <div className="text-center text-gray-600 mb-4">
-          Visualize how root-finding methods converge to a root! <br />
-          Enter your equation and explore each method's process.
+      <div className="max-w-3xl mx-auto">
+        {/* ---------- Team Card (Above all) ---------- */}
+        <div className="bg-gradient-to-br from-blue-200 to-fuchsia-100 rounded-xl shadow-md mb-6 px-6 py-4 border-l-8 border-blue-400">
+          <div className="text-xl font-extrabold text-blue-800 tracking-wide mb-2">
+            {team.name || "Team Name"}
+          </div>
+          <table>
+            <tbody>
+              {team.members.map((member, idx) => (
+                <tr key={idx} className="text-blue-900">
+                  <td className="pr-2 font-semibold">{member.name}</td>
+                  <td className="pl-3 opacity-80 text-xs">{member.id}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <input
-          className="border-2 border-blue-200 px-3 py-2 rounded-lg w-full mb-5 font-mono text-blue-900 shadow-md focus:border-blue-400 focus:ring"
-          value={equation}
-          onChange={(e) => setEquation(e.target.value)}
-          placeholder="Enter equation, e.g., log(x) + x^2 - 4"
-        />
+        {/* ------------------------------------------ */}
+        <div className="bg-white p-6 rounded-2xl shadow-2xl">
+          <h1 className="text-3xl font-extrabold mb-2 text-center text-blue-700 tracking-tight">
+            Nonlinear Equation Solver
+          </h1>
+          <div className="text-center text-gray-600 mb-4">
+            Visualize how root-finding methods converge to a root! <br />
+            Enter your equation and explore each method's process.
+          </div>
+          <input
+            className="border-2 border-blue-200 px-3 py-2 rounded-lg w-full mb-5 font-mono text-blue-900 shadow-md focus:border-blue-400 focus:ring"
+            value={equation}
+            onChange={(e) => setEquation(e.target.value)}
+            placeholder="Enter equation, e.g., log(x) + x^2 - 4"
+          />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-          {["Bisection", "Newton-Raphson", "Secant", "False Position"].map(
-            (m) => (
-              <button
-                key={m}
-                onClick={() => {
-                  setMethod(m);
-                  setResult(null);
-                }}
-                className={
-                  "px-4 py-2 rounded-lg font-semibold shadow transition " +
-                  (method === m
-                    ? "bg-gradient-to-r from-blue-600 to-fuchsia-500 text-white scale-105 ring-2 ring-fuchsia-300"
-                    : "bg-blue-200 hover:bg-blue-400 text-blue-800")
-                }
-              >
-                {m}
-              </button>
-            )
-          )}
-        </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+            {["Bisection", "Newton-Raphson", "Secant", "False Position"].map(
+              (m) => (
+                <button
+                  key={m}
+                  onClick={() => {
+                    setMethod(m);
+                    setResult(null);
+                  }}
+                  className={
+                    "px-4 py-2 rounded-lg font-semibold shadow transition " +
+                    (method === m
+                      ? "bg-gradient-to-r from-blue-600 to-fuchsia-500 text-white scale-105 ring-2 ring-fuchsia-300"
+                      : "bg-blue-200 hover:bg-blue-400 text-blue-800")
+                  }
+                >
+                  {m}
+                </button>
+              )
+            )}
+          </div>
 
-        {renderInitialInputs()}
+          {renderInitialInputs()}
 
-        <div className="flex flex-wrap gap-3 mb-6">
-          <button
-            onClick={() => handleSolve(method)}
-            disabled={!method}
-            className={`px-6 py-2 rounded font-bold shadow transition 
+          <div className="flex flex-wrap gap-3 mb-6">
+            <button
+              onClick={() => handleSolve(method)}
+              disabled={!method}
+              className={`px-6 py-2 rounded font-bold shadow transition 
               ${
                 !method
                   ? "bg-gray-300 text-gray-400 cursor-not-allowed"
                   : "bg-fuchsia-500 hover:bg-fuchsia-700 text-white"
               }`}
-          >
-            Solve
-          </button>
+            >
+              Solve
+            </button>
 
-          <button
-            onClick={handleCompare}
-            className="bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-600 hover:to-blue-500 text-white px-6 py-2 rounded-lg font-bold shadow"
-          >
-            Compare Methods
-          </button>
-        </div>
+            <button
+              onClick={handleCompare}
+              className="bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-600 hover:to-blue-500 text-white px-6 py-2 rounded-lg font-bold shadow"
+            >
+              Compare Methods
+            </button>
+          </div>
 
-        {error && (
-          <div className="text-red-500 font-semibold mb-3">{error}</div>
-        )}
-
-        <div className="mb-7">
-          {result && (
-            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg shadow mb-2">
-              <p className="font-bold text-blue-800">
-                {result.method}:{" "}
-                <span className="font-mono text-black">
-                  Root ≈ {result.root?.toFixed(6)}
-                </span>{" "}
-                <span className="text-gray-700">
-                  in {result.iterations} iterations.
-                </span>
-              </p>
-            </div>
+          {error && (
+            <div className="text-red-500 font-semibold mb-3">{error}</div>
           )}
-          {comparison && (
-            <div className="w-full">
-              <table className="w-full text-left border mt-4 bg-blue-100/70 rounded shadow overflow-hidden">
-                <thead>
-                  <tr>
-                    <th className="border px-3 py-1">Method</th>
-                    <th className="border px-3 py-1">Root</th>
-                    <th className="border px-3 py-1">Iterations</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {comparison.map((res) => (
-                    <tr key={res.method}>
-                      <td
-                        className="border px-2 py-1 font-semibold"
-                        style={{ color: methodColors[res.method] }}
-                      >
-                        {res.method}
-                      </td>
-                      <td className="border px-2 py-1">
-                        {res.root?.toFixed(6)}
-                      </td>
-                      <td className="border px-2 py-1">{res.iterations}</td>
+
+          <div className="mb-7">
+            {result && (
+              <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg shadow mb-2">
+                <p className="font-bold text-blue-800">
+                  {result.method}:{" "}
+                  <span className="font-mono text-black">
+                    Root ≈ {result.root?.toFixed(6)}
+                  </span>{" "}
+                  <span className="text-gray-700">
+                    in {result.iterations} iterations.
+                  </span>
+                </p>
+              </div>
+            )}
+            {comparison && (
+              <div className="w-full">
+                <table className="w-full text-left border mt-4 bg-blue-100/70 rounded shadow overflow-hidden">
+                  <thead>
+                    <tr>
+                      <th className="border px-3 py-1">Method</th>
+                      <th className="border px-3 py-1">Root</th>
+                      <th className="border px-3 py-1">Iterations</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {comparison.map((res) => (
+                      <tr key={res.method}>
+                        <td
+                          className="border px-2 py-1 font-semibold"
+                          style={{ color: methodColors[res.method] }}
+                        >
+                          {res.method}
+                        </td>
+                        <td className="border px-2 py-1">
+                          {res.root?.toFixed(6)}
+                        </td>
+                        <td className="border px-2 py-1">{res.iterations}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* ---- SHOW last steps before graph ---- */}
+          {result && (
+            <div className="mb-4">
+              <div className="font-semibold mb-1 text-blue-700">
+                Last {Math.max(10, result.iterSteps?.length || 0)} Iterations:
+              </div>
+              {renderLastSteps(result)}
             </div>
           )}
-        </div>
+          {/* ---- ---- */}
 
-        <div className="mt-6 overflow-x-auto">
-          <LineChart width={640} height={340} data={graphData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="x"
-              type="number"
-              domain={["auto", "auto"]}
-              tickCount={10}
-            />
-            <YAxis domain={["auto", "auto"]} />
-            <Tooltip contentStyle={{ fontSize: 14, fontFamily: "monospace" }} />
-            <Line
-              type="monotone"
-              dataKey="y"
-              stroke="#6366f1"
-              dot={false}
-              strokeWidth={2}
-            />
+          <div className="mt-6 overflow-x-auto">
+            <LineChart width={640} height={340} data={graphData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="x"
+                type="number"
+                domain={["auto", "auto"]}
+                tickCount={10}
+              />
+              <YAxis domain={["auto", "auto"]} />
+              <Tooltip
+                contentStyle={{ fontSize: 14, fontFamily: "monospace" }}
+              />
+              <Line
+                type="monotone"
+                dataKey="y"
+                stroke="#6366f1"
+                dot={false}
+                strokeWidth={2}
+              />
 
-            <ReferenceLine y={0} stroke="gray" strokeDasharray="3 3">
-              <Label value="y = 0" position="insideBottomRight" fontSize={12} />
-            </ReferenceLine>
+              <ReferenceLine y={0} stroke="gray" strokeDasharray="3 3">
+                <Label
+                  value="y = 0"
+                  position="insideBottomRight"
+                  fontSize={12}
+                />
+              </ReferenceLine>
 
-            {/* Show initial guess dots */}
-            {(method === "Newton-Raphson" ||
-              method === "Secant" ||
-              method === "False Position") && (
-              <>
-                {!isNaN(parsedGuessX0) && (
-                  <ReferenceDot
-                    x={parsedGuessX0}
-                    y={f(parsedGuessX0)}
-                    r={7}
-                    fill="#4f46e5"
-                    stroke="#fff"
-                    strokeWidth={2}
-                  >
-                    <Label position="top" fontSize={11} fill="#4f46e5">
-                      x₀
-                    </Label>
-                  </ReferenceDot>
-                )}
-                {(method === "Secant" || method === "False Position") &&
-                  !isNaN(parsedGuessX1) && (
+              {/* Show initial guess dots */}
+              {(method === "Newton-Raphson" ||
+                method === "Secant" ||
+                method === "False Position") && (
+                <>
+                  {!isNaN(parsedGuessX0) && (
                     <ReferenceDot
-                      x={parsedGuessX1}
-                      y={f(parsedGuessX1)}
+                      x={parsedGuessX0}
+                      y={f(parsedGuessX0)}
                       r={7}
-                      fill="#e11d48"
+                      fill="#4f46e5"
                       stroke="#fff"
                       strokeWidth={2}
                     >
-                      <Label position="top" fontSize={11} fill="#e11d48">
-                        x₁
+                      <Label position="top" fontSize={11} fill="#4f46e5">
+                        x₀
                       </Label>
                     </ReferenceDot>
                   )}
-              </>
-            )}
+                  {(method === "Secant" || method === "False Position") &&
+                    !isNaN(parsedGuessX1) && (
+                      <ReferenceDot
+                        x={parsedGuessX1}
+                        y={f(parsedGuessX1)}
+                        r={7}
+                        fill="#e11d48"
+                        stroke="#fff"
+                        strokeWidth={2}
+                      >
+                        <Label position="top" fontSize={11} fill="#e11d48">
+                          x₁
+                        </Label>
+                      </ReferenceDot>
+                    )}
+                </>
+              )}
 
-            {/* Final root */}
-            {result && result.root !== null && isFinite(result.root) && (
-              <ReferenceDot
-                x={result.root}
-                y={0}
-                r={9}
-                fill="#c026d3"
-                stroke="#fff"
-                strokeWidth={2}
-              >
-                <Label
-                  value="Root"
-                  position="bottom"
+              {/* Final root */}
+              {result && result.root !== null && isFinite(result.root) && (
+                <ReferenceDot
+                  x={result.root}
+                  y={0}
+                  r={9}
                   fill="#c026d3"
-                  fontSize={13}
-                />
-              </ReferenceDot>
-            )}
-          </LineChart>
-        </div>
-        {/* Legend/Key */}
-        <div className="my-3 px-3 text-gray-600 text-xs grid grid-cols-2 md:grid-cols-4 gap-3">
-          <span>
-            <span className="mr-2 inline-block rounded-full bg-blue-500 w-3 h-3" />
-            Bisection: Endpoints (a,b)
-          </span>
-          <span>
-            <span className="mr-2 inline-block rounded-full bg-fuchsia-500 w-3 h-3" />{" "}
-            Mid & Final root
-          </span>
-          <span>
-            <span className="mr-2 inline-block rounded-full bg-green-500 w-3 h-3" />
-            Newton/Secant Steps
-          </span>
-          <span>
-            <span className="mr-2 inline-block rounded-full bg-red-500 w-3 h-3" />
-            False Position: c
-          </span>
+                  stroke="#fff"
+                  strokeWidth={2}
+                >
+                  <Label
+                    value="Root"
+                    position="bottom"
+                    fill="#c026d3"
+                    fontSize={13}
+                  />
+                </ReferenceDot>
+              )}
+            </LineChart>
+          </div>
+          {/* Legend/Key */}
+          <div className="my-3 px-3 text-gray-600 text-xs grid grid-cols-2 md:grid-cols-4 gap-3">
+            <span>
+              <span className="mr-2 inline-block rounded-full bg-blue-500 w-3 h-3" />
+              Bisection: Endpoints (a,b)
+            </span>
+            <span>
+              <span className="mr-2 inline-block rounded-full bg-fuchsia-500 w-3 h-3" />{" "}
+              Mid & Final root
+            </span>
+            <span>
+              <span className="mr-2 inline-block rounded-full bg-green-500 w-3 h-3" />
+              Newton/Secant Steps
+            </span>
+            <span>
+              <span className="mr-2 inline-block rounded-full bg-red-500 w-3 h-3" />
+              False Position: c
+            </span>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
+// ------------ Only change below for False Position steps -----------
 function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
   let f, dfExpr, df;
   try {
@@ -356,7 +405,6 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
   let root = null;
   let iterSteps = []; // <-- store progress
 
-  // For global "auto interval" expansion (for bisection/fp fallback)
   let global_smallest = 0,
     global_largest = 0;
   let inc = 1;
@@ -365,7 +413,6 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
   while (f(global_largest) <= 0) (global_largest += inc), (inc *= 2);
 
   if (global_smallest == -Infinity || global_largest == Infinity) {
-    console.log("hi", global_smallest, global_largest);
     global_largest = 0;
     global_smallest = 0;
     let inc = 1;
@@ -373,15 +420,20 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
     inc = 1;
     while (f(global_largest) <= 0) (global_largest -= inc), (inc *= 2);
   }
+
   try {
     switch (method) {
       case "Bisection": {
-        let smallest = global_smallest;
-        let largest = global_largest;
-        console.log("Global interval:", smallest, largest);
+        let smallest = x0;
+        let largest = x1;
+        if (f(smallest) * f(largest) > 0) {
+          smallest = global_smallest;
+          largest = global_largest;
+        }
         for (iter = 0; iter < maxIter; iter++) {
           let mid = (largest + smallest) / 2.0;
           let diff = Math.abs(largest - smallest);
+          iterSteps.push({ a: smallest, b: largest, mid });
           if (diff <= tol) {
             root = mid;
             break;
@@ -396,11 +448,12 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
       case "Newton-Raphson": {
         let x1 = x0; // initial guess
         let x2 = x1 - f(x1) / df(x1);
+        iterSteps.push(x1);
         for (iter = 0; iter < maxIter; iter++) {
           x1 = x2;
           x2 = x1 - f(x1) / df(x1);
+          iterSteps.push(x1);
           if (Math.abs(x1 - x2) < tol) break;
-
           if (Math.abs(df(x1)) < 1e-12) {
             return {
               method,
@@ -418,9 +471,10 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
       case "Secant": {
         let sx1 = x0,
           sx2 = x1;
-
         let fx1 = f(sx1),
           fx2 = f(sx2);
+        iterSteps.push(sx1);
+        iterSteps.push(sx2);
         let sx3 = sx2 - (fx2 * (sx2 - sx1)) / (fx2 - fx1);
 
         for (iter = 0; iter < maxIter; iter++) {
@@ -439,46 +493,42 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
           sx2 = sx3;
           fx1 = fx2;
           fx2 = f(sx2);
-
           sx3 = sx2 - (fx2 * (sx2 - sx1)) / (fx2 - fx1);
 
+          iterSteps.push(sx3);
           if (Math.abs(sx3 - sx2) < tol) {
             root = sx3;
-
             break;
           }
-
           root = sx3;
         }
         break;
       }
 
       case "False Position": {
-        let fx1 = x0,
-          fx2 = x1;
-        if (f(fx1) * f(fx2) > 0) {
-          fx1 = global_smallest;
-          fx2 = global_largest;
+        let a = x0,
+          b = x1;
+        if (f(a) * f(b) > 0) {
+          a = global_smallest;
+          b = global_largest;
         }
-        console.log("Global interval:", fx1, fx2);
-        let fx0 = fx1 - (f(fx1) * (fx2 - fx1)) / (f(fx2) - f(fx1));
-        if (f(fx0) * f(fx1) < 0) fx2 = fx0;
-        else fx1 = fx0;
-
-        let fx0_prev = fx0;
-        fx0 = fx1 - (f(fx1) * (fx2 - fx1)) / (f(fx2) - f(fx1));
-
-        for (iter = 1; iter <= maxIter; iter++) {
-          if (f(fx1) * f(fx0) < 0) fx2 = fx0;
-          else fx1 = fx0;
-          fx0_prev = fx0;
-          fx0 = fx1 - (f(fx1) * (fx2 - fx1)) / (f(fx2) - f(fx1));
-
-          if (Math.abs(fx0_prev - fx0) < tol) {
-            root = fx0;
+        let fa = f(a),
+          fb = f(b);
+        for (iter = 0; iter < maxIter; iter++) {
+          const c = a - (fa * (b - a)) / (fb - fa);
+          iterSteps.push({ a, b, c });
+          if (Math.abs(f(c)) < tol) {
+            root = c;
             break;
           }
-          root = fx0;
+          if (fa * f(c) < 0) {
+            b = c;
+            fb = f(b);
+          } else {
+            a = c;
+            fa = f(a);
+          }
+          root = c;
         }
         break;
       }
@@ -494,4 +544,88 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
   }
 
   return { method, root, iterations: iter, iterSteps };
+}
+
+// ------------- Add this function at the end -----------------------
+function renderLastSteps(result) {
+  if (!result || !result.iterSteps) return null;
+  const steps = result.iterSteps;
+  const displayCount = Math.max(10, steps.length);
+  const shownSteps = steps.slice(-displayCount);
+  switch (result.method) {
+    case "Bisection":
+      return (
+        <table className="text-xs mb-2 bg-blue-100 rounded shadow border">
+          <thead>
+            <tr>
+              <th className="px-2 py-1 border">#</th>
+              <th className="px-2 py-1 border">a</th>
+              <th className="px-2 py-1 border">b</th>
+              <th className="px-2 py-1 border">mid</th>
+            </tr>
+          </thead>
+          <tbody>
+            {shownSteps.map((step, idx) => (
+              <tr key={idx}>
+                <td className="px-2 border">
+                  {steps.length - shownSteps.length + idx + 1}
+                </td>
+                <td className="px-2 border">{step.a?.toFixed(6)}</td>
+                <td className="px-2 border">{step.b?.toFixed(6)}</td>
+                <td className="px-2 border">{step.mid?.toFixed(6)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    case "Newton-Raphson":
+    case "Secant":
+      return (
+        <table className="text-xs mb-2 bg-blue-100 rounded shadow border">
+          <thead>
+            <tr>
+              <th className="px-2 py-1 border">#</th>
+              <th className="px-2 py-1 border">x</th>
+            </tr>
+          </thead>
+          <tbody>
+            {shownSteps.map((x, idx) => (
+              <tr key={idx}>
+                <td className="px-2 border">
+                  {steps.length - shownSteps.length + idx + 1}
+                </td>
+                <td className="px-2 border">{x?.toFixed(6)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    case "False Position":
+      return (
+        <table className="text-xs mb-2 bg-blue-100 rounded shadow border">
+          <thead>
+            <tr>
+              <th className="px-2 py-1 border">#</th>
+              <th className="px-2 py-1 border">a</th>
+              <th className="px-2 py-1 border">b</th>
+              <th className="px-2 py-1 border">c</th>
+            </tr>
+          </thead>
+          <tbody>
+            {shownSteps.map((step, idx) => (
+              <tr key={idx}>
+                <td className="px-2 border">
+                  {steps.length - shownSteps.length + idx + 1}
+                </td>
+                <td className="px-2 border">{step.a?.toFixed(6)}</td>
+                <td className="px-2 border">{step.b?.toFixed(6)}</td>
+                <td className="px-2 border">{step.c?.toFixed(6)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    default:
+      return null;
+  }
 }
