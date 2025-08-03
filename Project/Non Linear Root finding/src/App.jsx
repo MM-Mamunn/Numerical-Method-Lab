@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { evaluate, derivative } from "mathjs";
+import { evaluate, derivative, log } from "mathjs";
 import {
   LineChart,
   Line,
@@ -114,49 +114,6 @@ export default function App() {
       );
     }
     return null;
-  }
-
-  // Chart: points/lines showing algorithm progress
-  function getMethodScatters(res, methodName) {
-    if (!res || !res.iterSteps) return [];
-    let points = [];
-    switch (methodName) {
-      case "Bisection":
-        // Plot endpoints (a, b) and mid each step
-        res.iterSteps.forEach((step, i) => {
-          const { a, b, mid } = step;
-          if (i === 0) {
-            points.push({ x: a, y: f(a), type: "a", step: i });
-            points.push({ x: b, y: f(b), type: "b", step: i });
-          }
-          points.push({ x: mid, y: 0, type: "mid", step: i });
-        });
-        break;
-      case "Newton-Raphson":
-        points = res.iterSteps.map((x, i) => ({
-          x: x,
-          y: f(x),
-          step: i,
-        }));
-        break;
-      case "Secant":
-        points = res.iterSteps.map((x, i) => ({
-          x: x,
-          y: f(x),
-          step: i,
-        }));
-        break;
-      case "False Position":
-        res.iterSteps.forEach((step, i) => {
-          points.push({ x: step.a, y: f(step.a), type: "a", step: i });
-          points.push({ x: step.b, y: f(step.b), type: "b", step: i });
-          points.push({ x: step.c, y: f(step.c), type: "c", step: i });
-        });
-        break;
-      default:
-        break;
-    }
-    return points;
   }
 
   return (
@@ -331,91 +288,6 @@ export default function App() {
               </>
             )}
 
-            {/* Newton/Secant convergence steps as path */}
-            {result &&
-              result.iterSteps &&
-              ["Newton-Raphson", "Secant"].includes(result.method) && (
-                <Scatter
-                  data={result.iterSteps.map((x, i) => ({ x, y: f(x), i }))}
-                  fill={methodColors[result.method]}
-                  name="Guesses"
-                  shape="circle"
-                  legendType="circle"
-                  line
-                  lineType="joint"
-                  stroke={methodColors[result.method]}
-                  strokeWidth={2}
-                />
-              )}
-
-            {/* Bisection: show interval ends and mids */}
-            {result && result.method === "Bisection" && (
-              <>
-                <Scatter
-                  data={result.iterSteps.map((d, i) => ({
-                    x: d.a,
-                    y: f(d.a),
-                    i,
-                  }))}
-                  fill="#2f82ff"
-                  name="a (interval left)"
-                  shape="triangle"
-                />
-                <Scatter
-                  data={result.iterSteps.map((d, i) => ({
-                    x: d.b,
-                    y: f(d.b),
-                    i,
-                  }))}
-                  fill="#fbbf24"
-                  name="b (interval right)"
-                  shape="triangle"
-                />
-                <Scatter
-                  data={result.iterSteps.map((d, i) => ({ x: d.mid, y: 0, i }))}
-                  fill="#4ade80"
-                  name="Midpoint"
-                  shape="diamond"
-                />
-              </>
-            )}
-
-            {/* False Position: interval ends & c each step */}
-            {result && result.method === "False Position" && (
-              <>
-                <Scatter
-                  data={result.iterSteps.map((d, i) => ({
-                    x: d.a,
-                    y: f(d.a),
-                    i,
-                  }))}
-                  fill="#2f82ff"
-                  name="a"
-                  shape="square"
-                />
-                <Scatter
-                  data={result.iterSteps.map((d, i) => ({
-                    x: d.b,
-                    y: f(d.b),
-                    i,
-                  }))}
-                  fill="#fbbf24"
-                  name="b"
-                  shape="square"
-                />
-                <Scatter
-                  data={result.iterSteps.map((d, i) => ({
-                    x: d.c,
-                    y: f(d.c),
-                    i,
-                  }))}
-                  fill="#e11d48"
-                  name="c"
-                  shape="circle"
-                />
-              </>
-            )}
-
             {/* Final root */}
             {result && result.root !== null && isFinite(result.root) && (
               <ReferenceDot
@@ -488,22 +360,28 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
   let global_smallest = 0,
     global_largest = 0;
   let inc = 1;
-  while (f(global_smallest) >= 0 && Math.abs(global_smallest) < 1e6)
-    (global_smallest -= inc), (inc *= 2);
+  while (f(global_smallest) >= 0) (global_smallest -= inc), (inc *= 2);
   inc = 1;
-  while (f(global_largest) <= 0 && Math.abs(global_largest) < 1e6)
-    (global_largest += inc), (inc *= 2);
+  while (f(global_largest) <= 0) (global_largest += inc), (inc *= 2);
 
+  if (global_smallest == -Infinity || global_largest == Infinity) {
+    console.log("hi", global_smallest, global_largest);
+    global_largest = 0;
+    global_smallest = 0;
+    let inc = 1;
+    while (f(global_smallest) >= 0) (global_smallest += inc), (inc *= 2);
+    inc = 1;
+    while (f(global_largest) <= 0) (global_largest -= inc), (inc *= 2);
+  }
   try {
     switch (method) {
       case "Bisection": {
         let smallest = global_smallest;
         let largest = global_largest;
-
+        console.log("Global interval:", smallest, largest);
         for (iter = 0; iter < maxIter; iter++) {
           let mid = (largest + smallest) / 2.0;
           let diff = Math.abs(largest - smallest);
-          // iterSteps.push({ a: smallest, b: largest, mid });
           if (diff <= tol) {
             root = mid;
             break;
@@ -517,7 +395,6 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
 
       case "Newton-Raphson": {
         let x1 = x0; // initial guess
-        iterSteps.push(x1);
         let x2 = x1 - f(x1) / df(x1);
         for (iter = 0; iter < maxIter; iter++) {
           x1 = x2;
@@ -533,8 +410,6 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
               error: "Zero derivative encountered.",
             };
           }
-
-          iterSteps.push(x1);
         }
         root = x2;
         break;
@@ -543,8 +418,7 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
       case "Secant": {
         let sx1 = x0,
           sx2 = x1;
-        iterSteps.push(sx1);
-        iterSteps.push(sx2);
+
         let fx1 = f(sx1),
           fx2 = f(sx2);
         let sx3 = sx2 - (fx2 * (sx2 - sx1)) / (fx2 - fx1);
@@ -570,37 +444,41 @@ function solveEquation(equation, method, user_x0 = 1.5, user_x1 = 2) {
 
           if (Math.abs(sx3 - sx2) < tol) {
             root = sx3;
-            iterSteps.push(sx3);
+
             break;
           }
-          iterSteps.push(sx3);
+
           root = sx3;
         }
         break;
       }
 
       case "False Position": {
-        let fa = f(x0),
-          fb = f(x1);
-        // If initial guesses do not bracket root, fall back
-        let a = global_smallest;
-        let b = global_largest;
-        if (fa * fb > 0) {
-          fa = f(a);
-          fb = f(b);
+        let fx1 = x0,
+          fx2 = x1;
+        if (f(fx1) * f(fx2) > 0) {
+          fx1 = global_smallest;
+          fx2 = global_largest;
         }
-        for (iter = 0; iter < maxIter; iter++) {
-          let fa = f(a),
-            fb = f(b);
-          const c = (a * fb - b * fa) / (fb - fa);
-          iterSteps.push({ a, b, c });
-          if (Math.abs(f(c)) < tol) {
-            root = c;
+        console.log("Global interval:", fx1, fx2);
+        let fx0 = fx1 - (f(fx1) * (fx2 - fx1)) / (f(fx2) - f(fx1));
+        if (f(fx0) * f(fx1) < 0) fx2 = fx0;
+        else fx1 = fx0;
+
+        let fx0_prev = fx0;
+        fx0 = fx1 - (f(fx1) * (fx2 - fx1)) / (f(fx2) - f(fx1));
+
+        for (iter = 1; iter <= maxIter; iter++) {
+          if (f(fx1) * f(fx0) < 0) fx2 = fx0;
+          else fx1 = fx0;
+          fx0_prev = fx0;
+          fx0 = fx1 - (f(fx1) * (fx2 - fx1)) / (f(fx2) - f(fx1));
+
+          if (Math.abs(fx0_prev - fx0) < tol) {
+            root = fx0;
             break;
           }
-          if (fa * f(c) < 0) b = c;
-          else a = c;
-          root = c;
+          root = fx0;
         }
         break;
       }
