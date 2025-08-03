@@ -32,10 +32,7 @@ void solve()
         valid = 0;
 
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 14fcb15a72dda6fd6a8882a51aa9f25546456d1e
     vector<long long> deter;
     vector<vector<long long>>temp;
 
